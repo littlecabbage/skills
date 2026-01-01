@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Quick validation script for skills - minimal version
+技能快速验证脚本 - 最小版本
 """
 
 import sys
@@ -10,43 +10,43 @@ import yaml
 from pathlib import Path
 
 def validate_skill(skill_path):
-    """Basic validation of a skill"""
+    """技能的基本验证"""
     skill_path = Path(skill_path)
 
-    # Check SKILL.md exists
+    # 检查SKILL.md存在
     skill_md = skill_path / 'SKILL.md'
     if not skill_md.exists():
-        return False, "SKILL.md not found"
+        return False, "未找到SKILL.md"
 
-    # Read and validate frontmatter
+    # 读取并验证前置数据
     content = skill_md.read_text()
     if not content.startswith('---'):
-        return False, "No YAML frontmatter found"
+        return False, "未找到YAML前置数据"
 
-    # Extract frontmatter
+    # 提取前置数据
     match = re.match(r'^---\n(.*?)\n---', content, re.DOTALL)
     if not match:
-        return False, "Invalid frontmatter format"
+        return False, "无效的前置数据格式"
 
     frontmatter_text = match.group(1)
 
-    # Parse YAML frontmatter
+    # 解析YAML前置数据
     try:
         frontmatter = yaml.safe_load(frontmatter_text)
         if not isinstance(frontmatter, dict):
-            return False, "Frontmatter must be a YAML dictionary"
+            return False, "前置数据必须是YAML字典"
     except yaml.YAMLError as e:
-        return False, f"Invalid YAML in frontmatter: {e}"
+        return False, f"前置数据中的YAML无效：{e}"
 
-    # Define allowed properties
+    # 定义允许的属性
     ALLOWED_PROPERTIES = {'name', 'description', 'license', 'allowed-tools', 'metadata'}
 
-    # Check for unexpected properties (excluding nested keys under metadata)
+    # 检查意外属性（排除metadata下的嵌套键）
     unexpected_keys = set(frontmatter.keys()) - ALLOWED_PROPERTIES
     if unexpected_keys:
         return False, (
-            f"Unexpected key(s) in SKILL.md frontmatter: {', '.join(sorted(unexpected_keys))}. "
-            f"Allowed properties are: {', '.join(sorted(ALLOWED_PROPERTIES))}"
+            f"SKILL.md前置数据中的意外键：{', '.join(sorted(unexpected_keys))}。 "
+            f"允许的属性是：{', '.join(sorted(ALLOWED_PROPERTIES))}"
         )
 
     # Check required fields

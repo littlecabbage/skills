@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Skill Packager - Creates a distributable .skill file of a skill folder
+技能打包器 - 创建技能文件夹的可分发.skill文件
 
-Usage:
+用法：
     python utils/package_skill.py <path/to/skill-folder> [output-directory]
 
-Example:
+示例：
     python utils/package_skill.py skills/public/my-skill
     python utils/package_skill.py skills/public/my-skill ./dist
 """
@@ -18,34 +18,34 @@ from quick_validate import validate_skill
 
 def package_skill(skill_path, output_dir=None):
     """
-    Package a skill folder into a .skill file.
+    将技能文件夹打包成.skill文件。
 
-    Args:
-        skill_path: Path to the skill folder
-        output_dir: Optional output directory for the .skill file (defaults to current directory)
+    参数:
+        skill_path: 技能文件夹的路径
+        output_dir: .skill文件的可选输出目录（默认为当前目录）
 
-    Returns:
-        Path to the created .skill file, or None if error
+    返回:
+        创建的.skill文件的路径，或None如果出错
     """
     skill_path = Path(skill_path).resolve()
 
-    # Validate skill folder exists
+    # 验证技能文件夹存在
     if not skill_path.exists():
-        print(f"❌ Error: Skill folder not found: {skill_path}")
+        print(f"❌ 错误：未找到技能文件夹：{skill_path}")
         return None
 
     if not skill_path.is_dir():
-        print(f"❌ Error: Path is not a directory: {skill_path}")
+        print(f"❌ 错误：路径不是目录：{skill_path}")
         return None
 
-    # Validate SKILL.md exists
+    # 验证SKILL.md存在
     skill_md = skill_path / "SKILL.md"
     if not skill_md.exists():
-        print(f"❌ Error: SKILL.md not found in {skill_path}")
+        print(f"❌ 错误：在{skill_path}中未找到SKILL.md")
         return None
 
-    # Run validation before packaging
-    print("🔍 Validating skill...")
+    # 在打包前运行验证
+    print("🔍 正在验证技能...")
     valid, message = validate_skill(skill_path)
     if not valid:
         print(f"❌ Validation failed: {message}")

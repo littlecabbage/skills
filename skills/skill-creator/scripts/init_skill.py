@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Skill Initializer - Creates a new skill from template
+技能初始化器 - 从模板创建新技能
 
-Usage:
+用法：
     init_skill.py <skill-name> --path <path>
 
-Examples:
+示例：
     init_skill.py my-new-skill --path skills/public
     init_skill.py my-api-helper --path skills/private
     init_skill.py custom-skill --path /custom/location
@@ -17,37 +17,37 @@ from pathlib import Path
 
 SKILL_TEMPLATE = """---
 name: {skill_name}
-description: [TODO: Complete and informative explanation of what the skill does and when to use it. Include WHEN to use this skill - specific scenarios, file types, or tasks that trigger it.]
+description: [TODO: 完整且信息丰富的解释，说明技能的功能以及何时使用它。包括何时使用此技能 - 触发它的特定场景、文件类型或任务。]
 ---
 
 # {skill_title}
 
-## Overview
+## 概述
 
-[TODO: 1-2 sentences explaining what this skill enables]
+[TODO: 1-2句话解释此技能启用的功能]
 
-## Structuring This Skill
+## 构建此技能
 
-[TODO: Choose the structure that best fits this skill's purpose. Common patterns:
+[TODO: 选择最适合此技能目的的结构。常见模式：
 
-**1. Workflow-Based** (best for sequential processes)
-- Works well when there are clear step-by-step procedures
-- Example: DOCX skill with "Workflow Decision Tree" → "Reading" → "Creating" → "Editing"
-- Structure: ## Overview → ## Workflow Decision Tree → ## Step 1 → ## Step 2...
+**1. 基于工作流程**（最适合顺序过程）
+- 当有清晰的逐步程序时效果良好
+- 示例：DOCX技能使用"工作流程决策树" → "读取" → "创建" → "编辑"
+- 结构：## 概述 → ## 工作流程决策树 → ## 步骤1 → ## 步骤2...
 
-**2. Task-Based** (best for tool collections)
-- Works well when the skill offers different operations/capabilities
-- Example: PDF skill with "Quick Start" → "Merge PDFs" → "Split PDFs" → "Extract Text"
-- Structure: ## Overview → ## Quick Start → ## Task Category 1 → ## Task Category 2...
+**2. 基于任务**（最适合工具集合）
+- 当技能提供不同操作/功能时效果良好
+- 示例：PDF技能使用"快速开始" → "合并PDF" → "拆分PDF" → "提取文本"
+- 结构：## 概述 → ## 快速开始 → ## 任务类别1 → ## 任务类别2...
 
-**3. Reference/Guidelines** (best for standards or specifications)
-- Works well for brand guidelines, coding standards, or requirements
-- Example: Brand styling with "Brand Guidelines" → "Colors" → "Typography" → "Features"
-- Structure: ## Overview → ## Guidelines → ## Specifications → ## Usage...
+**3. 参考/指南**（最适合标准或规范）
+- 适用于品牌指南、编码标准或要求
+- 示例：品牌样式使用"品牌指南" → "颜色" → "排版" → "功能"
+- 结构：## 概述 → ## 指南 → ## 规范 → ## 使用...
 
-**4. Capabilities-Based** (best for integrated systems)
-- Works well when the skill provides multiple interrelated features
-- Example: Product Management with "Core Capabilities" → numbered capability list
+**4. 基于功能**（最适合集成系统）
+- 当技能提供多个相互关联的功能时效果良好
+- 示例：产品管理使用"核心功能" → 编号功能列表
 - Structure: ## Overview → ## Core Capabilities → ### 1. Feature → ### 2. Feature...
 
 Patterns can be mixed and matched as needed. Most skills combine patterns (e.g., start with task-based, add workflow for complex operations).

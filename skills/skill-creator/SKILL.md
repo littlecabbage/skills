@@ -1,205 +1,202 @@
 ---
 name: skill-creator
-description: Guide for creating effective skills. This skill should be used when users want to create a new skill (or update an existing skill) that extends Claude's capabilities with specialized knowledge, workflows, or tool integrations.
-license: Complete terms in LICENSE.txt
+description: 创建有效技能的指南。当用户想要创建一个新技能（或更新现有技能）以通过专门知识、工作流程或工具集成来扩展Claude的能力时，应使用此技能。
+license: 完整条款见LICENSE.txt
 ---
 
-# Skill Creator
+# 技能创建者
 
-This skill provides guidance for creating effective skills.
+此技能提供创建有效技能的指导。
 
-## About Skills
+## 关于技能
 
-Skills are modular, self-contained packages that extend Claude's capabilities by providing
-specialized knowledge, workflows, and tools. Think of them as "onboarding guides" for specific
-domains or tasks—they transform Claude from a general-purpose agent into a specialized agent
-equipped with procedural knowledge that no model can fully possess.
+技能是模块化、自包含的包，通过提供专门知识、工作流程和工具来扩展Claude的能力。可以将它们视为特定领域或任务的"入门指南"——它们将Claude从通用代理转变为配备了模型无法完全拥有的程序化知识的专门代理。
 
-### What Skills Provide
+### 技能提供的功能
 
-1. Specialized workflows - Multi-step procedures for specific domains
-2. Tool integrations - Instructions for working with specific file formats or APIs
-3. Domain expertise - Company-specific knowledge, schemas, business logic
-4. Bundled resources - Scripts, references, and assets for complex and repetitive tasks
+1. 专门工作流程 - 特定领域的多步骤程序
+2. 工具集成 - 处理特定文件格式或API的指令
+3. 领域专业知识 - 公司特定知识、模式、业务逻辑
+4. 捆绑资源 - 用于复杂和重复任务的脚本、参考资料和资产
 
-## Core Principles
+## 核心原则
 
-### Concise is Key
+### 简洁是关键
 
-The context window is a public good. Skills share the context window with everything else Claude needs: system prompt, conversation history, other Skills' metadata, and the actual user request.
+上下文窗口是公共资源。技能与其他Claude需要的一切共享上下文窗口：系统提示、对话历史、其他技能的元数据以及实际的用户请求。
 
-**Default assumption: Claude is already very smart.** Only add context Claude doesn't already have. Challenge each piece of information: "Does Claude really need this explanation?" and "Does this paragraph justify its token cost?"
+**默认假设：Claude已经非常智能。** 只添加Claude还没有的上下文。对每条信息提出质疑："Claude真的需要这个解释吗？"以及"这个段落是否值得其令牌成本？"
 
-Prefer concise examples over verbose explanations.
+优先选择简洁的示例而不是冗长的解释。
 
-### Set Appropriate Degrees of Freedom
+### 设置适当的自由度
 
-Match the level of specificity to the task's fragility and variability:
+将具体程度与任务的脆弱性和变异性相匹配：
 
-**High freedom (text-based instructions)**: Use when multiple approaches are valid, decisions depend on context, or heuristics guide the approach.
+**高自由度（基于文本的指令）**：当多个方法都有效、决策取决于上下文或启发式方法指导方法时使用。
 
-**Medium freedom (pseudocode or scripts with parameters)**: Use when a preferred pattern exists, some variation is acceptable, or configuration affects behavior.
+**中等自由度（带参数的伪代码或脚本）**：当存在首选模式、一些变体是可以接受的或配置影响行为时使用。
 
-**Low freedom (specific scripts, few parameters)**: Use when operations are fragile and error-prone, consistency is critical, or a specific sequence must be followed.
+**低自由度（特定脚本、少量参数）**：当操作脆弱且容易出错、一致性至关重要或必须遵循特定序列时使用。
 
-Think of Claude as exploring a path: a narrow bridge with cliffs needs specific guardrails (low freedom), while an open field allows many routes (high freedom).
+可以将Claude想象成探索一条路径：有悬崖的狭窄桥梁需要特定的护栏（低自由度），而开阔的田野允许许多路线（高自由度）。
 
-### Anatomy of a Skill
+### 技能解剖
 
-Every skill consists of a required SKILL.md file and optional bundled resources:
+每个技能由必需的SKILL.md文件和可选的捆绑资源组成：
 
 ```
 skill-name/
-├── SKILL.md (required)
-│   ├── YAML frontmatter metadata (required)
-│   │   ├── name: (required)
-│   │   └── description: (required)
-│   └── Markdown instructions (required)
-└── Bundled Resources (optional)
-    ├── scripts/          - Executable code (Python/Bash/etc.)
-    ├── references/       - Documentation intended to be loaded into context as needed
-    └── assets/           - Files used in output (templates, icons, fonts, etc.)
+├── SKILL.md (必需)
+│   ├── YAML前置数据元数据 (必需)
+│   │   ├── name: (必需)
+│   │   └── description: (必需)
+│   └── Markdown指令 (必需)
+└── 捆绑资源 (可选)
+    ├── scripts/          - 可执行代码 (Python/Bash/等)
+    ├── references/       - 文档，旨在根据需要加载到上下文中
+    └── assets/           - 输出中使用的文件 (模板、图标、字体等)
 ```
 
-#### SKILL.md (required)
+#### SKILL.md (必需)
 
-Every SKILL.md consists of:
+每个SKILL.md包含：
 
-- **Frontmatter** (YAML): Contains `name` and `description` fields. These are the only fields that Claude reads to determine when the skill gets used, thus it is very important to be clear and comprehensive in describing what the skill is, and when it should be used.
-- **Body** (Markdown): Instructions and guidance for using the skill. Only loaded AFTER the skill triggers (if at all).
+- **前置数据** (YAML)：包含`name`和`description`字段。这些是Claude读取以确定何时使用技能的唯一字段，因此非常重要的是要清楚全面地描述技能是什么以及何时应使用它。
+- **主体** (Markdown)：使用技能的指令和指导。只有在技能触发后（如果有的话）才会加载。
 
-#### Bundled Resources (optional)
+#### 捆绑资源 (可选)
 
-##### Scripts (`scripts/`)
+##### 脚本 (`scripts/`)
 
-Executable code (Python/Bash/etc.) for tasks that require deterministic reliability or are repeatedly rewritten.
+用于需要确定性可靠性或反复重写的任务的可执行代码 (Python/Bash/等)。
 
-- **When to include**: When the same code is being rewritten repeatedly or deterministic reliability is needed
-- **Example**: `scripts/rotate_pdf.py` for PDF rotation tasks
-- **Benefits**: Token efficient, deterministic, may be executed without loading into context
-- **Note**: Scripts may still need to be read by Claude for patching or environment-specific adjustments
+- **何时包含**：当相同的代码被反复重写或需要确定性可靠性时
+- **示例**：`scripts/rotate_pdf.py` 用于PDF旋转任务
+- **优势**：令牌高效、确定性，可能在不加载到上下文中就执行
+- **注意**：Claude可能仍然需要读取脚本以进行修补或环境特定调整
 
-##### References (`references/`)
+##### 参考资料 (`references/`)
 
-Documentation and reference material intended to be loaded as needed into context to inform Claude's process and thinking.
+旨在根据需要加载到上下文中以告知Claude过程和思考的文档和参考资料。
 
-- **When to include**: For documentation that Claude should reference while working
-- **Examples**: `references/finance.md` for financial schemas, `references/mnda.md` for company NDA template, `references/policies.md` for company policies, `references/api_docs.md` for API specifications
-- **Use cases**: Database schemas, API documentation, domain knowledge, company policies, detailed workflow guides
-- **Benefits**: Keeps SKILL.md lean, loaded only when Claude determines it's needed
-- **Best practice**: If files are large (>10k words), include grep search patterns in SKILL.md
-- **Avoid duplication**: Information should live in either SKILL.md or references files, not both. Prefer references files for detailed information unless it's truly core to the skill—this keeps SKILL.md lean while making information discoverable without hogging the context window. Keep only essential procedural instructions and workflow guidance in SKILL.md; move detailed reference material, schemas, and examples to references files.
+- **何时包含**：用于Claude在工作时应参考的文档
+- **示例**：`references/finance.md` 用于财务模式，`references/mnda.md` 用于公司NDA模板，`references/policies.md` 用于公司政策，`references/api_docs.md` 用于API规范
+- **用例**：数据库模式、API文档、领域知识、公司政策、详细工作流程指南
+- **优势**：保持SKILL.md简洁，只在Claude确定需要时加载
+- **最佳实践**：如果文件很大（>10k字），在SKILL.md中包含grep搜索模式
+- **避免重复**：信息应该位于SKILL.md或参考文件中，而不是两者兼有。除非真正核心于技能，否则优先使用参考文件存储详细信息——这保持SKILL.md简洁，同时使信息可发现而不会占用上下文窗口。只在SKILL.md中保留基本程序指令和工作流程指导；将详细参考资料、模式和示例移至参考文件。
 
-##### Assets (`assets/`)
+##### 资产 (`assets/`)
 
-Files not intended to be loaded into context, but rather used within the output Claude produces.
+不打算加载到上下文中，而是用于Claude产生的输出中的文件。
 
-- **When to include**: When the skill needs files that will be used in the final output
-- **Examples**: `assets/logo.png` for brand assets, `assets/slides.pptx` for PowerPoint templates, `assets/frontend-template/` for HTML/React boilerplate, `assets/font.ttf` for typography
-- **Use cases**: Templates, images, icons, boilerplate code, fonts, sample documents that get copied or modified
-- **Benefits**: Separates output resources from documentation, enables Claude to use files without loading them into context
+- **何时包含**：当技能需要将在最终输出中使用的文件时
+- **示例**：`assets/logo.png` 用于品牌资产，`assets/slides.pptx` 用于PowerPoint模板，`assets/frontend-template/` 用于HTML/React样板，`assets/font.ttf` 用于排版
+- **用例**：模板、图像、图标、样板代码、字体、被复制或修改的示例文档
+- **优势**：将输出资源与文档分离，使Claude能够在不将它们加载到上下文中就使用文件
 
 #### What to Not Include in a Skill
 
-A skill should only contain essential files that directly support its functionality. Do NOT create extraneous documentation or auxiliary files, including:
+技能应该只包含直接支持其功能的必要文件。不要创建无关的文档或辅助文件，包括：
 
 - README.md
 - INSTALLATION_GUIDE.md
 - QUICK_REFERENCE.md
 - CHANGELOG.md
-- etc.
+- 等。
 
-The skill should only contain the information needed for an AI agent to do the job at hand. It should not contain auxilary context about the process that went into creating it, setup and testing procedures, user-facing documentation, etc. Creating additional documentation files just adds clutter and confusion.
+技能应该只包含AI代理完成手头工作所需的信息。它不应该包含关于创建过程的辅助上下文、设置和测试程序、面向用户的文档等。创建额外的文档文件只会增加杂乱和混淆。
 
-### Progressive Disclosure Design Principle
+### 渐进披露设计原则
 
-Skills use a three-level loading system to manage context efficiently:
+技能使用三级加载系统来高效管理上下文：
 
-1. **Metadata (name + description)** - Always in context (~100 words)
-2. **SKILL.md body** - When skill triggers (<5k words)
-3. **Bundled resources** - As needed by Claude (Unlimited because scripts can be executed without reading into context window)
+1. **元数据（名称+描述）** - 始终在上下文中（~100字）
+2. **SKILL.md主体** - 当技能触发时（<5k字）
+3. **捆绑资源** - 根据Claude需要（无限，因为脚本可以在不读取到上下文窗口的情况下执行）
 
-#### Progressive Disclosure Patterns
+#### 渐进披露模式
 
-Keep SKILL.md body to the essentials and under 500 lines to minimize context bloat. Split content into separate files when approaching this limit. When splitting out content into other files, it is very important to reference them from SKILL.md and describe clearly when to read them, to ensure the reader of the skill knows they exist and when to use them.
+保持SKILL.md主体简洁并低于500行以最小化上下文膨胀。当接近此限制时，将内容拆分到单独的文件中。当将内容拆分到其他文件中时，非常重要的是从SKILL.md引用它们并清楚描述何时读取它们，以确保技能的读者知道它们的存在以及何时使用它们。
 
-**Key principle:** When a skill supports multiple variations, frameworks, or options, keep only the core workflow and selection guidance in SKILL.md. Move variant-specific details (patterns, examples, configuration) into separate reference files.
+**关键原则：** 当技能支持多个变体、框架或选项时，只在SKILL.md中保留核心工作流程和选择指导。将变体特定细节（模式、示例、配置）移至单独的参考文件中。
 
-**Pattern 1: High-level guide with references**
+**模式1：带参考资料的高层指南**
 
 ```markdown
-# PDF Processing
+# PDF处理
 
-## Quick start
+## 快速开始
 
-Extract text with pdfplumber:
-[code example]
+使用pdfplumber提取文本：
+[代码示例]
 
-## Advanced features
+## 高级功能
 
-- **Form filling**: See [FORMS.md](FORMS.md) for complete guide
-- **API reference**: See [REFERENCE.md](REFERENCE.md) for all methods
-- **Examples**: See [EXAMPLES.md](EXAMPLES.md) for common patterns
+- **表单填写**：请参阅[FORMS.md](FORMS.md)以获取完整指南
+- **API参考**：请参阅[REFERENCE.md](REFERENCE.md)以获取所有方法
+- **示例**：请参阅[EXAMPLES.md](EXAMPLES.md)以获取常见模式
 ```
 
-Claude loads FORMS.md, REFERENCE.md, or EXAMPLES.md only when needed.
+Claude仅在需要时加载FORMS.md、REFERENCE.md或EXAMPLES.md。
 
-**Pattern 2: Domain-specific organization**
+**模式2：特定领域组织**
 
-For Skills with multiple domains, organize content by domain to avoid loading irrelevant context:
+对于具有多个领域的技能，按领域组织内容以避免加载无关上下文：
 
 ```
 bigquery-skill/
-├── SKILL.md (overview and navigation)
+├── SKILL.md (概述和导航)
 └── reference/
-    ├── finance.md (revenue, billing metrics)
-    ├── sales.md (opportunities, pipeline)
-    ├── product.md (API usage, features)
-    └── marketing.md (campaigns, attribution)
+    ├── finance.md (收入、计费指标)
+    ├── sales.md (机会、管道)
+    ├── product.md (API使用、功能)
+    └── marketing.md (活动、归因)
 ```
 
-When a user asks about sales metrics, Claude only reads sales.md.
+当用户询问销售指标时，Claude只读取sales.md。
 
-Similarly, for skills supporting multiple frameworks or variants, organize by variant:
+类似地，对于支持多个框架或变体的技能，按变体组织：
 
 ```
 cloud-deploy/
-├── SKILL.md (workflow + provider selection)
+├── SKILL.md (工作流程+提供商选择)
 └── references/
-    ├── aws.md (AWS deployment patterns)
-    ├── gcp.md (GCP deployment patterns)
-    └── azure.md (Azure deployment patterns)
+    ├── aws.md (AWS部署模式)
+    ├── gcp.md (GCP部署模式)
+    └── azure.md (Azure部署模式)
 ```
 
-When the user chooses AWS, Claude only reads aws.md.
+当用户选择AWS时，Claude只读取aws.md。
 
-**Pattern 3: Conditional details**
+**模式3：条件细节**
 
-Show basic content, link to advanced content:
+显示基本内容，链接到高级内容：
 
 ```markdown
-# DOCX Processing
+# DOCX处理
 
-## Creating documents
+## 创建文档
 
-Use docx-js for new documents. See [DOCX-JS.md](DOCX-JS.md).
+使用docx-js创建新文档。请参阅[DOCX-JS.md](DOCX-JS.md)。
 
-## Editing documents
+## 编辑文档
 
-For simple edits, modify the XML directly.
+对于简单编辑，直接修改XML。
 
-**For tracked changes**: See [REDLINING.md](REDLINING.md)
-**For OOXML details**: See [OOXML.md](OOXML.md)
+**对于跟踪更改**：请参阅[REDLINING.md](REDLINING.md)
+**对于OOXML细节**：请参阅[OOXML.md](OOXML.md)
 ```
 
-Claude reads REDLINING.md or OOXML.md only when the user needs those features.
+Claude仅在用户需要这些功能时读取REDLINING.md或OOXML.md。
 
-**Important guidelines:**
+**重要指南：**
 
-- **Avoid deeply nested references** - Keep references one level deep from SKILL.md. All reference files should link directly from SKILL.md.
-- **Structure longer reference files** - For files longer than 100 lines, include a table of contents at the top so Claude can see the full scope when previewing.
+- **避免深度嵌套的参考资料** - 保持参考资料距离SKILL.md一级深度。所有参考文件都应该直接从SKILL.md链接。
+- **构建较长的参考文件结构** - 对于超过100行的文件，在顶部包含目录，以便Claude在预览时看到完整范围。
 
-## Skill Creation Process
+## 技能创建过程
 
 Skill creation involves these steps:
 
