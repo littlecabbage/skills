@@ -1,4 +1,4 @@
-"""Lightweight connection handling for MCP servers."""
+"""MCP服务器的轻量级连接处理。"""
 
 from abc import ABC, abstractmethod
 from contextlib import AsyncExitStack
@@ -11,7 +11,7 @@ from mcp.client.streamable_http import streamablehttp_client
 
 
 class MCPConnection(ABC):
-    """Base class for MCP server connections."""
+    """MCP服务器连接的基类。"""
 
     def __init__(self):
         self.session = None
@@ -19,10 +19,10 @@ class MCPConnection(ABC):
 
     @abstractmethod
     def _create_context(self):
-        """Create the connection context based on connection type."""
+        """基于连接类型创建连接上下文。"""
 
     async def __aenter__(self):
-        """Initialize MCP server connection."""
+        """初始化MCP服务器连接。"""
         self._stack = AsyncExitStack()
         await self._stack.__aenter__()
 

@@ -1,53 +1,53 @@
-# MCP Server Best Practices
+# MCP服务器最佳实践
 
-## Quick Reference
+## 快速参考
 
-### Server Naming
-- **Python**: `{service}_mcp` (e.g., `slack_mcp`)
-- **Node/TypeScript**: `{service}-mcp-server` (e.g., `slack-mcp-server`)
+### 服务器命名
+- **Python**：`{service}_mcp`（例如，`slack_mcp`）
+- **Node/TypeScript**：`{service}-mcp-server`（例如，`slack-mcp-server`）
 
-### Tool Naming
-- Use snake_case with service prefix
-- Format: `{service}_{action}_{resource}`
-- Example: `slack_send_message`, `github_create_issue`
+### 工具命名
+- 使用带有服务前缀的snake_case
+- 格式：`{service}_{action}_{resource}`
+- 示例：`slack_send_message`、`github_create_issue`
 
-### Response Formats
-- Support both JSON and Markdown formats
-- JSON for programmatic processing
-- Markdown for human readability
+### 响应格式
+- 支持JSON和Markdown格式
+- JSON用于程序化处理
+- Markdown用于人类可读性
 
-### Pagination
-- Always respect `limit` parameter
-- Return `has_more`, `next_offset`, `total_count`
-- Default to 20-50 items
+### 分页
+- 始终尊重`limit`参数
+- 返回`has_more`、`next_offset`、`total_count`
+- 默认20-50个项目
 
-### Transport
-- **Streamable HTTP**: For remote servers, multi-client scenarios
-- **stdio**: For local integrations, command-line tools
-- Avoid SSE (deprecated in favor of streamable HTTP)
-
----
-
-## Server Naming Conventions
-
-Follow these standardized naming patterns:
-
-**Python**: Use format `{service}_mcp` (lowercase with underscores)
-- Examples: `slack_mcp`, `github_mcp`, `jira_mcp`
-
-**Node/TypeScript**: Use format `{service}-mcp-server` (lowercase with hyphens)
-- Examples: `slack-mcp-server`, `github-mcp-server`, `jira-mcp-server`
-
-The name should be general, descriptive of the service being integrated, easy to infer from the task description, and without version numbers.
+### 传输
+- **可流HTTP**：用于远程服务器、多客户端场景
+- **stdio**：用于本地集成、命令行工具
+- 避免SSE（已弃用，倾向于可流HTTP）
 
 ---
 
-## Tool Naming and Design
+## 服务器命名约定
 
-### Tool Naming
+遵循这些标准化的命名模式：
 
-1. **Use snake_case**: `search_users`, `create_project`, `get_channel_info`
-2. **Include service prefix**: Anticipate that your MCP server may be used alongside other MCP servers
+**Python**：使用格式`{service}_mcp`（小写带下划线）
+- 示例：`slack_mcp`、`github_mcp`、`jira_mcp`
+
+**Node/TypeScript**：使用格式`{service}-mcp-server`（小写带连字符）
+- 示例：`slack-mcp-server`、`github-mcp-server`、`jira-mcp-server`
+
+名称应该是通用的、对正在集成的服务具有描述性的、容易从任务描述中推断出来的，并且不包含版本号。
+
+---
+
+## 工具命名和设计
+
+### 工具命名
+
+1. **使用snake_case**：`search_users`、`create_project`、`get_channel_info`
+2. **包含服务前缀**：预期您的MCP服务器可能与其他MCP服务器一起使用
    - Use `slack_send_message` instead of just `send_message`
    - Use `github_create_issue` instead of just `create_issue`
 3. **Be action-oriented**: Start with verbs (get, list, search, create, etc.)
